@@ -1,0 +1,20 @@
+{
+  "name": "basededatos",
+  "version": "1.0.0",
+  "description": "El backend del front",
+  "main": "index.js",
+  "author": "YCRUZ1 <90659305+YCRUZ1@users.noreply.github.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "starts": "nodemon server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongodb": "^4.1.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  }
+}

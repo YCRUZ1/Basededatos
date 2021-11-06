@@ -20,8 +20,6 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 const app = Express();
 app.use(Express.json());
 let conexion;
-let baseDeDatos;
-
 
 
 import {ObjectId} from 'mongodb';
@@ -92,6 +90,7 @@ app.post('/productos/nuevos', (req,res)=>{
     //res.send('Producto creado');
 });
 
+
 app.patch('/productos/editar', (req,res)=>{
     const edicion=req.body;
     console.log(edicion);
@@ -100,7 +99,7 @@ app.patch('/productos/editar', (req,res)=>{
     const operacion ={
         $set:edicion,
     };
-    baseDeDatos.collection('Storeproductos').findOneAndUpdate(filtroProducto,edicion,{upsert:true, returnOriginal: true}, (err,result)=>{
+    conexion.collection('Storeproductos').findOneAndUpdate(filtroProducto,operacion,{upsert:true, returnOriginal: true}, (err,result)=>{
         if(err){
             console.error('Error actualizando el producto: ', err);
             res.sendStatus(500);
@@ -114,7 +113,7 @@ app.patch('/productos/editar', (req,res)=>{
 
 app.delete('/productos/eliminar', (req,res)=>{
     const filtroProducto ={_id: new ObjectId(req.body.id)};
-    baseDeDatos.collection('Storeproductos').deleteOne(filtroProducto,(err,result)=>{
+    conexion.collection('Storeproductos').deleteOne(filtroProducto,(err,result)=>{
         if(err){
             console.error('Error eliminando el producto: ', err);
             res.sendStatus(500);
@@ -196,6 +195,40 @@ app.post('/sales/nuevos', (req,res)=>{
    
 });
 
+app.patch('/sales/editar', (req,res)=>{
+    const edicion=req.body;
+    console.log(edicion);
+    const filtroProducto ={_id: new ObjectId(edicion.id)};
+    delete edicion.id;
+    const operacion ={
+        $set:edicion,
+    };
+    conexion.collection('Storesales').findOneAndUpdate(filtroProducto,operacion,{upsert:true, returnOriginal: true}, (err,result)=>{
+        if(err){
+            console.error('Error actualizando la venta: ', err);
+            res.sendStatus(500);
+        }
+        else{
+            console.log('Actualizado con exito');
+            res.sendStatus(200);
+        }
+    });
+});
+
+app.delete('/sales/eliminar', (req,res)=>{
+    const filtroProducto ={_id: new ObjectId(req.body.id)};
+    conexion.collection('Storesales').deleteOne(filtroProducto,(err,result)=>{
+        if(err){
+            console.error('Error eliminando la venta: ', err);
+            res.sendStatus(500);
+        }
+        else{
+            console.log('Venta eliminado con exito');
+            res.sendStatus(200);
+        }
+    });
+});
+
 // --
 
 //USUARIOS
@@ -247,6 +280,40 @@ app.post('/usuarios/nuevos', (req,res)=>{
         res.sendStatus(500);
     } 
    
+});
+
+app.patch('/usuarios/editar', (req,res)=>{
+    const edicion=req.body;
+    console.log(edicion);
+    const filtroProducto ={_id: new ObjectId(edicion.id)};
+    delete edicion.id;
+    const operacion ={
+        $set:edicion,
+    };
+    conexion.collection('Storeusuario').findOneAndUpdate(filtroProducto,operacion,{upsert:true, returnOriginal: true}, (err,result)=>{
+        if(err){
+            console.error('Error actualizando el usuario: ', err);
+            res.sendStatus(500);
+        }
+        else{
+            console.log('Actualizado con exito');
+            res.sendStatus(200);
+        }
+    });
+});
+
+app.delete('/usuarios/eliminar', (req,res)=>{
+    const filtroProducto ={_id: new ObjectId(req.body.id)};
+    conexion.collection('Storeusuario').deleteOne(filtroProducto,(err,result)=>{
+        if(err){
+            console.error('Error eliminando el usuario: ', err);
+            res.sendStatus(500);
+        }
+        else{
+            console.log('Venta eliminado con exito');
+            res.sendStatus(200);
+        }
+    });
 });
 
 // --
